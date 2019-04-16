@@ -37,9 +37,28 @@ function tryMouleLoad(module) {
   Module._extensions[extension](module)
 }
 
+
+
 function req(modulePath) {
   // 解析绝对路径
   let Pathname = path.join(__dirname, modulePath)
+  let index = 0
+  let extnames = Object.keys(Module._extensions)
+  // 处理没加后缀名
+  function find(path) {
+    try {
+      fs.accessSync(path)
+      // 拿到最终有效的path
+      Pathname = path
+    } catch (e) {
+      // 没找到
+      if (index >= extnames.length) throw new Error('文件找不到')
+      let ext = extnames[index++]
+      find(path + ext)
+    }
+  }
+  find(Pathname)
+
   // 查找缓存
   if (Module._cache[Pathname]) {
     return Module._cache[Pathname].exports
@@ -51,5 +70,7 @@ function req(modulePath) {
 }
 
 
-module.exports = req
+let a = req('./a2')
+console.log(a);
+
 
