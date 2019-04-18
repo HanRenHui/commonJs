@@ -71,6 +71,6 @@ function req(modulePath) {
 
 
 let a = req('./a2')
-console.log(a);
+
 
 
