@@ -22,8 +22,6 @@ Module._extensions = {
     let content = fs.readFileSync(module.id, 'utf8')
     let fnStr = Module.wrapper[0] + content + Module.wrapper[1]
     let fn = vm.runInThisContext(fnStr)
-    console.log(fn.toString());
-    
     fn.call(module.exports, module.exports, module, req)
   },
   '.json'(module) {
